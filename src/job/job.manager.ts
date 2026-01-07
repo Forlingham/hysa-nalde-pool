@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { BitcoinRpcService } from './bitcoin.rpc';
 import * as zmq from 'zeromq';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JobGenerator } from './job.generator';
 
 @Injectable()
 export class JobManager implements OnModuleInit {
@@ -14,6 +15,7 @@ export class JobManager implements OnModuleInit {
   private currentJob: any = null;
 
   constructor(
+    private jobGenerator: JobGenerator,
     private configService: ConfigService,
     private rpcService: BitcoinRpcService,
     private eventEmitter: EventEmitter2,
@@ -22,7 +24,7 @@ export class JobManager implements OnModuleInit {
   async onModuleInit() {
     await this.initZmq();
     // 启动时立即获取一次任务，不要干等下一个区块
-    await this.updateJob(); 
+    await this.updateJob();
   }
 
   // 初始化 ZMQ 监听
@@ -56,14 +58,17 @@ export class JobManager implements OnModuleInit {
       const start = Date.now();
       // 1. 调用 RPC 获取模板
       const template: any = await this.rpcService.getBlockTemplate();
-      
+
       // 2. 简单的去重：如果 previousblockhash 没变，说明还是同一个高度
-      if (this.currentJob && this.currentJob.previousblockhash === template.previousblockhash) {
+      if (
+        this.currentJob &&
+        this.currentJob.previousblockhash === template.previousblockhash
+      ) {
         return; // 任务没变，忽略
       }
 
       this.currentJob = template;
-      
+
       // 3. 处理模板 (简化版)
       // 在这里你需要把 template 转换成 Stratum 协议需要的格式
       // 下一步我们会详细写这里：构建 Merkle Tree 和 Coinbase
@@ -72,7 +77,9 @@ export class JobManager implements OnModuleInit {
       // 4. 广播事件：告诉 TCP Server 有新活儿了
       this.eventEmitter.emit('job.new', stratumJob);
 
-      this.logger.log(`✅ Job Updated! Height: ${template.height}, TxCount: ${template.transactions.length}, Time: ${Date.now() - start}ms`);
+      this.logger.log(
+        `✅ Job Updated! Height: ${template.height}, TxCount: ${template.transactions.length}, Time: ${Date.now() - start}ms`,
+      );
     } catch (error) {
       this.logger.error('Failed to update job', error);
     }
@@ -80,16 +87,6 @@ export class JobManager implements OnModuleInit {
 
   // 临时占位：把 RPC 数据简单包装一下
   private processTemplateToJob(template: any) {
-    return {
-      jobId: Date.now().toString(16), // 临时 ID
-      prevHash: template.previousblockhash,
-      coinbase1: 'placeholder_cb1', // 下一步我们要算这个
-      coinbase2: 'placeholder_cb2', // 下一步我们要算这个
-      merkleBranch: [], // 下一步我们要算这个
-      version: template.version.toString(16),
-      nbits: template.bits,
-      ntime: template.curtime.toString(16),
-      cleanJobs: true, // 强制矿工丢弃旧任务
-    };
+    return this.jobGenerator.process(template, '');
   }
 }

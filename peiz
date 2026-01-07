@@ -1,0 +1,18 @@
+regtest=1
+server=1
+txindex=1
+
+[regtest]
+rpcuser=scash_user
+rpcpassword=scash_password
+rpcallowip=127.0.0.1
+rpcport=18443
+
+port=18444
+listen=1
+bind=127.0.0.1
+addnode=127.0.0.1:18445
+addnode=127.0.0.1:18446
+
+# 开启 ZMQ 监听区块哈希
+zmqpubhashblock=tcp://127.0.0.1:28332

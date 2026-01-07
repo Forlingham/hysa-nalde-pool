@@ -16,7 +16,8 @@ export class TcpServer implements OnModuleInit {
     const server = net.createServer((socket) => {
       // 每个连接维护一个 buffer 字符串（解决粘包）
       let buffer = '';
-
+      this.stratum.addSocket(socket);
+      
       console.log(
         `🔌 新矿工连接: ${socket.remoteAddress}:${socket.remotePort}`,
       );
