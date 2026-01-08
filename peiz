@@ -16,3 +16,16 @@ addnode=127.0.0.1:18446
 
 # 开启 ZMQ 监听区块哈希
 zmqpubhashblock=tcp://127.0.0.1:28332
+
+
+
+./bitcoin-cli -rpcuser=scash_user -rpcpassword=scash_password -rpcport=18443 
+
+./bitcoin-cli -rpcuser=scash_user -rpcpassword=scash_password -rpcport=18443  createwallet  mu
+
+getnewaddress
+
+./bitcoin-cli -rpcuser=scash_user -rpcpassword=scash_password -rpcport=18443 generatetoaddress 1 bcrt1qke4m6278fmqw7pmaxw9edhpata9v23pprxeztx
+
+
+bcrt1qke4m6278fmqw7pmaxw9edhpata9v23pprxeztx
