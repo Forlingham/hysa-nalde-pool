@@ -1,0 +1,17 @@
+{
+  "name": "scash-pool",
+  "version": "1.0.0",
+  "description": "Simple Scash Mining Pool",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun run --watch src/index.ts",
+    "test": "bun run src/test-native.ts"
+  },
+  "dependencies": {
+    "bun-types": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

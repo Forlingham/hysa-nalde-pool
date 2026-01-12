@@ -1,0 +1,10 @@
+node_modules/
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+.DS_Store
+*.log
