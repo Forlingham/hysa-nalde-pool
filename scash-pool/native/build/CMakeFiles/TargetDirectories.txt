@@ -1,6 +1,0 @@
-/root/vscode/bun/test-pool5/scash-pool/native/build/CMakeFiles/scash_native.dir
-/root/vscode/bun/test-pool5/scash-pool/native/build/CMakeFiles/edit_cache.dir
-/root/vscode/bun/test-pool5/scash-pool/native/build/CMakeFiles/rebuild_cache.dir
-/root/vscode/bun/test-pool5/scash-pool/native/build/randomx/CMakeFiles/randomx.dir
-/root/vscode/bun/test-pool5/scash-pool/native/build/randomx/CMakeFiles/edit_cache.dir
-/root/vscode/bun/test-pool5/scash-pool/native/build/randomx/CMakeFiles/rebuild_cache.dir

@@ -1,4 +1,6 @@
 node_modules/
+build/
+scash-pool/native/build/
 *.o
 *.a
 *.so
